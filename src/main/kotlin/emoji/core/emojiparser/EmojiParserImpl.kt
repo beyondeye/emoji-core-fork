@@ -26,6 +26,7 @@ private object EmojiParserImplConstants {
     )
 }
 
+//
 internal class EmojiParserImpl : EmojiParser {
     override fun parseEmojiData(
         data: String,

@@ -2,7 +2,7 @@ package emoji.core.datasource
 
 import emoji.core.emojifetcher.EmojiFetchCallback
 import emoji.core.emojifetcher.EmojiFetcher
-import emoji.core.emojifetcher.EmojiFetcherImpl
+import emoji.core.emojifetcher.EmojiFetcherJson
 import emoji.core.model.NetworkEmoji
 import java.io.File
 import java.io.IOException
@@ -10,24 +10,22 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-private object EmojiFetcherConstants {
-    // original file is in https://unicode.org/Public/emoji/latest/emoji-test.txt
-    const val UNICODE_EMOJIS_URL = "https://makeappssimple.com/hosting/emoji_core/emoji.txt"
-}
+// translations are also available!
+//"https://github.com/unicode-org/cldr-json/blob/main/cldr-json/cldr-annotations-full/annotations/en/annotations.json"
+private const val JsonUrl="https://raw.githubusercontent.com/unicode-org/cldr-json/main/cldr-json/cldr-annotations-full/annotations/en/annotations.json"
 
-
-public class EmojiDataSourceImpl : EmojiDataSource {
+public class EmojiDataSourceJson : EmojiDataSource {
     override suspend fun getAllEmojis(
         cacheFile: File?,
         isSkinToneSupported:Boolean,
     ): List<NetworkEmoji> {
-        val emojiFetcher: EmojiFetcher = EmojiFetcherImpl(
+        val emojiFetcher: EmojiFetcher = EmojiFetcherJson(
             cacheFile = cacheFile,
             isSkinToneSupported = isSkinToneSupported
         )
         return suspendCoroutine { continuation ->
             emojiFetcher.fetchEmojiData(
-                url = EmojiFetcherConstants.UNICODE_EMOJIS_URL,
+                url = JsonUrl,
                 callback = object : EmojiFetchCallback {
                     override fun onFetchSuccess(
                         emojis: List<NetworkEmoji>,

@@ -1,7 +1,7 @@
 package emoji.core.emojifetcher
 
 import emoji.core.emojiparser.EmojiParser
-import emoji.core.emojiparser.EmojiParserImpl
+import emoji.core.emojiparser.EmojiParserJson
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Call
@@ -13,15 +13,16 @@ import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-private object EmojiFetcherImplConstants {
+
+private object EmojiFetcherJsonConstants {
     const val FIVE_MB_IN_BYTES = 5 * 1024 * 1024.toLong()
 }
 
-internal class EmojiFetcherImpl(
-    private val cacheFile: File?, // = null,
+internal class EmojiFetcherJson(
+    private val cacheFile: File?, //  = null,
     private val isSkinToneSupported:Boolean, //= false
 ) : EmojiFetcher {
-    private val emojiParser: EmojiParser = EmojiParserImpl()
+    private val emojiParser: EmojiParser = EmojiParserJson()
     override fun fetchEmojiData(
         callback: EmojiFetchCallback,
         url: String,
@@ -32,7 +33,7 @@ internal class EmojiFetcherImpl(
                 cache = cacheFile?.run {
                     Cache(
                         directory = cacheFile,
-                        maxSize = EmojiFetcherImplConstants.FIVE_MB_IN_BYTES,
+                        maxSize = EmojiFetcherJsonConstants.FIVE_MB_IN_BYTES,
                     )
                 },
             )
